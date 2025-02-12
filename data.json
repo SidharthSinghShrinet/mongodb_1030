@@ -1,8 +1,10 @@
 {
   "key1": "string",
   "key": 1234567,
+  "key8": 12.23,
   "key3": true,
   "key4": null,
   "key5": {},
-  "key6": []
+  "key6": [],
+  "key10":ObjectId(),
 }

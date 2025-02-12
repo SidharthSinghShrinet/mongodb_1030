@@ -55,3 +55,32 @@ let greet = () => {
     }
 ]
 */
+
+//https://github.com/utk-281/mongodb_1030
+db.users.insertOne({ name: "abc", email: "abc@gmail.com" });
+
+db.emp.insertMany([
+  {
+    name: "santanu",
+    city: "Chennai",
+    skills: ["html", "css", "js", "react"],
+    age: 26,
+    gender: "M",
+  },
+  {
+    name: "chetna",
+    city: "Banglore",
+    skills: ["java", "html", "css", "sql"],
+    age: 27,
+    gender: "F",
+  },
+  {
+    name: "sre",
+    city: "Noida",
+    skills: ["node", "js", "mongodb", "sql"],
+    age: 24,
+    gender: "M",
+  },
+]);
+
+db.emp.insertOne({ name });
