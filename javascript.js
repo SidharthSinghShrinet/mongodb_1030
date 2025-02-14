@@ -85,11 +85,4 @@ db.emp.insertMany([
 
 db.emp.insertOne({ name });
 
-db.demo.insertMany([
-  { name: "abc", city: "Noida" },
-  { name: "abc", city: "Chennai" },
-  { name: "abc", city: "Noida" },
-  { name: "abc", city: "BLR" },
-  { name: "abc", city: "DLI" },
-  { name: "abc", city: "GWL" },
-]);
+g;
