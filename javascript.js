@@ -85,4 +85,8 @@ db.emp.insertMany([
 
 db.emp.insertOne({ name });
 
-g;
+db.emp.find({ job: "manager", sal: { $gt: 2500 } });
+
+db.emp.find({ job: { $eq: "manager" }, sal: { $gt: 2500 } });
+
+db.emp.find({ skills: { $in: ["sql", "react"] } });
