@@ -90,3 +90,16 @@ db.emp.find({ job: "manager", sal: { $gt: 2500 } });
 db.emp.find({ job: { $eq: "manager" }, sal: { $gt: 2500 } });
 
 db.emp.find({ skills: { $in: ["sql", "react"] } });
+
+db.emp.find({
+  $and: [
+    { $or: [{ deptNo: 10 }, { deptNo: 30 }] },
+    { $or: [{ job: "manager" }, { job: "clerk" }] },
+  ],
+});
+
+db.emp.find({ $and: [{ sal: { $gt: 1200 } }, { sal: { $lt: 3000 } }] });
+
+db.emp.find({ sal: { $not: { $gt: 2500 } } });
+
+db.emp.find({ $and: [{ job: "clerk" }, { sal: { $gt: 1500 } }] });
