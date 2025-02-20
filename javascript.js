@@ -108,9 +108,22 @@
 
 // db.emp.find({ hireDate: { $gt: new Date("31-12-1981") } });
 
-if (undefined) {
-  // " " ==> truthy --> true, ""--> false; false
-  console.log("hi");
-} else {
-  console.log("bye");
-}
+// if (undefined) {
+//   // " " ==> truthy --> true, ""--> false; false
+//   console.log("hi");
+// } else {
+//   console.log("bye");
+// }
+
+emp = {
+  _id: 1234,
+  name: "abc",
+  age: 12,
+  address: {
+    city: "Noida",
+    state: "UP",
+  },
+  skills: ["html", "css"],
+};
+console.log(emp.name);
+console.log(emp.address.city);
