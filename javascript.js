@@ -127,3 +127,239 @@ emp = {
 };
 console.log(emp.name);
 console.log(emp.address.city);
+
+/* {
+    name: string,
+    age : number
+    isMarried: boolean
+} */
+
+db.createCollection("demo2", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["name", "age", "isMarried"],
+      properties: {
+        name: {
+          bsonType: "string",
+        },
+        age: {
+          bsonType: "int",
+        },
+        isMarried: {
+          bsonType: "bool",
+        },
+      },
+    },
+  },
+});
+
+db.demo2.insertOne({
+  name: "abc",
+  age: 23,
+  isMarried: false,
+});
+
+db.demo2.insertOne({
+  name: "abc",
+  age: 23,
+  isMarried: false,
+  phoneNumber: 1234567890,
+});
+
+db.createCollection("demo3", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["name", "skills"],
+      properties: {
+        name: {
+          bsonType: "string",
+        },
+        skills: {
+          bsonType: "array",
+          items: {
+            bsonType: "string",
+          },
+        },
+      },
+    },
+  },
+});
+
+db.demo3.insertOne({
+  name: "abc",
+  skills: ["html"],
+});
+
+/* {
+  name:"string",
+  email:"string",
+  password:"string",
+  phoneNumber:"int",
+  address:{
+      city:"string",
+      state:"string",
+      pincode:"int"
+  },
+  skills:["string"],
+} */
+
+db.createCollection("demo4", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["name", "email", "password", "phoneNumber", "address", "skills"],
+      properties: {
+        name: {
+          bsonType: "string",
+          description: "name should be string",
+        },
+        email: {
+          bsonType: "string",
+          description: "name should be string",
+        },
+        password: {
+          bsonType: "string",
+          description: "name should be string",
+        },
+        phoneNumber: {
+          bsonType: "int",
+        },
+        address: {
+          bsonType: "object",
+          required: ["city", "state", "pincode"],
+          properties: {
+            city: { bsonType: "string" },
+            state: { bsonType: "string" },
+            pincode: { bsonType: "int" },
+          },
+        },
+        skills: {
+          bsonType: "array",
+          items: {
+            bsonType: "string",
+          },
+        },
+      },
+    },
+  },
+});
+
+db.demo4.insertOne({
+  name: "av",
+  email: "abc",
+  password: "abc",
+  phoneNumber: 1234567890,
+  address: {
+    city: "Noida",
+    pincode: 201301,
+  },
+  skills: ["html", "css"],
+});
+
+/* {
+        skills:[{ fe:["html"] }, { fe: ["css"] }, ........]
+      } */
+
+db.createCollection("demo5", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["skills"],
+      properties: {
+        bsonType: "array",
+        items: {
+          bsonType: "object",
+          required: ["fe"],
+          properties: {
+            bsonType: "array",
+            items: {
+              bsonType: "string",
+            },
+          },
+        },
+      },
+    },
+  },
+});
+
+db.users.insertOne({
+  name: "varun",
+  age: 27,
+  address: {
+    city: "Noida",
+    state: "UP",
+  },
+});
+
+db.userDetails.insertOne({
+  name: "varun",
+  age: 27,
+});
+
+db.address.insertOne({
+  city: "noida",
+  state: "up",
+});
+
+db.userDetails.updateOne(
+  { name: "varun" },
+  { $set: { address: ObjectId("67b81db4bd4ce5090dcb0cef") } }
+);
+light;
+
+db.emp.aggregate([{ $match: { job: "clerk" } }]);
+
+db.emp.aggregate([
+  {
+    $addFields: {
+      annualSal: { $multiply: ["$sal", 12] },
+    },
+  },
+]);
+
+db.emp.aggregate([
+  {
+    $addFields: {
+      annualSalary: { $multiply: ["$sal", 12] },
+    },
+  },
+  {
+    $match: {
+      $and: [{ deptNo: { $in: [10, 20] } }, { job: "clerk" }, { annualSalary: { $gt: 25000 } }],
+    },
+  },
+]);
+
+db.emp.aggregate([
+  {
+    $match: {
+      $and: [{ deptNo: { $in: [10, 30] } }, { hireDate: { $gt: new Date("31-dec-1981") } }],
+    },
+  },
+  {
+    $project: { empName: 1 },
+  },
+]);
+
+db.emp.aggregate([
+  {
+    $addFields: {
+      year: { $year: "$hireDate" },
+    },
+  },
+  {
+    $match: {
+      $and: [{ year: { $gt: 1981 } }, { deptNo: { $in: [10, 30] } }],
+    },
+  },
+]);
+
+db.emp.aggregate([
+  {
+    $group: {
+      _id: "$job",
+    },
+  },
+]);
