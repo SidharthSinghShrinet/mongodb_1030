@@ -360,6 +360,272 @@ db.emp.aggregate([
   {
     $group: {
       _id: "$job",
+      count: { $sum: 1 },
+      avgSal: { $avg: "$sal" },
+      maxSal: { $max: "$sal" },
+      minSal: { $min: "$sal" },
+      sumSal: { $sum: "$sal" },
+    },
+  },
+]);
+
+db.emp.aggregate([
+  {
+    $group: {
+      _id: "$job",
+      numberOfEmp: { $sum: 1 },
+      maxSal: { $max: "$sal" },
+      minSal: { $min: "$sal" },
+      totalSal: { $sum: "$sal" },
+      avgSal: { $avg: "$sal" },
+    },
+  },
+]);
+
+db.emp.aggregate([
+  {
+    $match: {
+      empName: { $regex: /a/ },
+    },
+  },
+  {
+    $group: {
+      _id: "$job",
+      totalEmp: { $sum: 1 },
+    },
+  },
+]);
+
+db.emp.aggregate([
+  {
+    $group: {
+      _id: "$deptNo",
+      totalSalary: { $sum: "$sal" },
+    },
+  },
+]);
+
+db.emp.aggregate([
+  {
+    $match: {
+      job: { $in: ["clerk", "manager"] },
+    },
+  },
+  {
+    $project: {
+      empName: 1,
+      dateOfJoining: "$hireDate",
+      deptNo: 1,
+      _id: 0,
+    },
+  },
+]);
+
+db.emp.aggregate([
+  {
+    $match: {
+      empName: { $regex: /a/ },
+    },
+  },
+  {
+    $group: {
+      _id: "$job",
+      totalNumberOfEmp: { $sum: 1 },
+      employeeName: { $push: "$empName" },
+    },
+  },
+  {
+    $project: {
+      totalNumberOfEmp: 1,
+      employeeName: 1,
+      job: "$_id",
+      _id: 0,
+    },
+  },
+]);
+
+db.emp.aggregate([
+  {
+    $addFields: {
+      midTermSal: { $multiply: ["$sal", 6] },
+    },
+  },
+  {
+    $match: {
+      midTermSal: { $gt: 30000 },
+    },
+  },
+  {
+    $project: {
+      empName: 1,
+      hireDate: 1,
+      midTermSal: 1,
+      _id: 0,
+    },
+  },
+]);
+
+db.emp.aggregate([
+  {
+    $group: {
+      _id: "$job",
+      count: { $sum: 1 },
+    },
+  },
+  {
+    $match: {
+      count: { $gt: 3 },
+    },
+  },
+]);
+
+db.emp.aggregate([
+  {
+    $group: {
+      _id: "$deptNo",
+      totalSal: { $sum: "$sal" },
+      count: { $sum: 1 },
+    },
+  },
+  {
+    $match: {
+      totalSal: { $gt: 10000 },
+    },
+  },
+  {
+    $project: {
+      _id: 0,
+    },
+  },
+]);
+
+db.emp.aggregate([
+  {
+    $group: {
+      _id: "$deptNo",
+      maximum_salary: { $max: "$sal" },
+      emp_name: { $push: "$empName" },
+      jobs: { $push: "$job" },
+      designation: { $addToSet: "$job" },
+    },
+  },
+  {
+    $match: {
+      maximum_salary: { $gt: 5000 },
+    },
+  },
+  {
+    $project: {
+      designation: 1,
+      emp_name: 1,
+      _id: 0,
+    },
+  },
+]);
+
+db.emp.aggregate([
+  {
+    $match: {
+      $expr: {
+        $gt: ["$comm", "$sal"],
+      },
+    },
+  },
+  {
+    $project: {
+      empName: 1,
+      _id: 0,
+    },
+  },
+]);
+
+db.emp.aggregate([
+  {
+    $sort: {
+      empName: -1,
+    },
+  },
+  {
+    $project: {
+      empName: 1,
+      _id: 0,
+    },
+  },
+]);
+
+db.emp.aggregate([
+  {
+    $sort: {
+      sal: -1,
+      count: { $sum: 1 },
+    },
+  },
+  { $limit: 1 },
+]);
+
+db.emp.aggregate([
+  {
+    $group: {
+      _id: "$sal",
+      avgSal: { $avg: "$sal" },
+      count: { $sum: 1 },
+    },
+  },
+  {
+    $project: {
+      avgSal: 1,
+      _id: 0,
+      sal: "$_id",
+    },
+  },
+]);
+
+db.emp.aggregate([
+  {
+    $group: {
+      _id: null,
+      avgSal: { $avg: "$sal" },
+      count: { $sum: 1 },
+    },
+  },
+]);
+
+db.emp.aggregate([
+  {
+    $match: {
+      empName: { $regex: /a/ },
+    },
+  },
+  {
+    $group: {
+      _id: null,
+      count: { $sum: 1 },
+    },
+  },
+  {
+    $project: {
+      count: 1,
+      _id: 0,
+    },
+  },
+]);
+
+db.addressInfo.insertMany([
+  { pincode: 20301, city: "Noida", state: "UP" },
+  {
+    pincode: 562157,
+    city: "Banglore",
+    state: "KA",
+  },
+]);
+
+db.emp.aggregate([
+  {
+    $lookup: {
+      from: "addressInfo",
+      foreignField: "_id",
+      localField: "address",
+      as: "address",
     },
   },
 ]);
